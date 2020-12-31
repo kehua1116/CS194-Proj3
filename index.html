@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CS194 Project3 Lucy Wang</title>
+	<link rel="stylesheet" type="text/css" href="website.css">
+	<link href='http://fonts.googleapis.com/css?family=Arial' rel='stylesheet'>
+</head>
+<body>
+
+<div align='middle'>
+	<h1>Face Morphing</h1>
+	<p class="author">Lucy Wang</p>
+
+	<br>
+
+	<div>
+	<h2> 1. Defining Correspondences & Computing the "Mid-way Face"</h2>
+		<p align='left'>Before creating the full morphing series, let's try to find the "middle face" as our first step. The mid face contains 1/2 of color and shape from both images. The morphing steps are outlined below:
+			<ol align='left'>
+			<li>Define correspondencies between images: I manually selected 44 points that can capture the face well from both images. </li>
+			<li>Compute the average correspondencies between the two images by averaging the points. Then use Delaunay Triangulation method to find a triangulation from the averaged points. </li>
+			<li>For each of the triangle, we compute an affine transformation matrix T from original points to mid points. Then use inverse morphing and bilinear interpolation to find the corresponding image pixel values from the original imagse and map then to the mid image. We repeat this procedure for both image, therefore creating a final mid image that's the average of the two original ones. </li>
+			</ol></p>
+		<p align='left'>Here I show the defined correspondencies of my boyfriend's face and my face, as well as the mid-face.  </p>
+
+		<div align='middle'>
+			<table style="width=100%">
+				<tr>
+					<td>
+						<img src="lucy_aligned.jpg" align="middle" width="300px" />
+						<figcaption align="middle">
+						    Lucy
+						</figcaption>
+					</td>
+					<td>
+						<img src="yanchu_aligned.jpg" align="middle" width="300px" />
+						<figcaption align="middle">
+							Yanchu
+						</figcaption>
+					</td>	
+					<td>
+						<img src="midface.jpg" align="middle" width="300px" />
+						<figcaption align="middle">
+							Mid-face
+						</figcaption>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<img src="lucy_tri.jpg" align="middle" width="300px" />
+						<figcaption align="middle">
+						    Lucy's correspondencies
+						</figcaption>
+					</td>
+					<td>
+						<img src="yanchu_tri.jpg" align="middle" width="300px" />
+						<figcaption align="middle">
+							Yanchu's correspondencies
+						</figcaption>
+					</td>	
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<br>
+
+	<div>
+	<h2> 2. The Morph Sequence </h2>
+		<p align='left'>To make the morphing sequence dynamic, I created a total of 30 "mid-face" images with different dissolving fraction ranging from 0 (entirely image1) to 1 (entirely image 2). Each time, the pixel value of the "mid-face" image is (1 - fraction) * img1 + fraction * img2. Here's the gif image of my morph sequence. </p>
+		<img src="lucy_yanchu.gif" align="middle" width="400px" />
+	</div>
+
+	<br>
+
+	<div>
+	<h2> 3. The "Mean face" of a population </h2>
+		<p align='left'> In this part, I created the mean face of the population of Danish Scientists from the pre-labeled <a href="http://www2.imm.dtu.dk/~aam/datasets/datasets.html">dataset</a>. It contains 37 face images each labeled with 58 points. To create the mean face, I averaged the shape and color of each face. Here's some sampled faces and the Mean face:</p>
+			<div align='middle'>
+			<table style="width=100%">
+				<tr>
+					<td>
+						<img id="compact" src="face_data/data/01-1m.bmp" align="middle" width="200px"/>
+					</td>
+					<td>
+						<img id="compact" src="face_data/data/05-1m.bmp" align="middle" width="200px"/></td>	
+					<td>
+						<img id="compact" src="face_data/data/14-1f.bmp" align="middle" width="200px"/>
+					</td>
+					<td>
+						<img id="compact" src="face_data/data/37-1m.bmp" align="middle" width="200px"/>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<img id="compact" src="face_data/data/17-1m.bmp" align="middle" width="200px"/>
+					</td>
+					<td>
+						<img id="compact" src="face_data/data/35-1f.bmp" align="middle" width="200px"/></td>	
+					<td>
+						<img id="compact" src="face_data/data/26-1m.bmp" align="middle" width="200px"/>
+					</td>
+					<td>
+						<img id="compact" src="face_data/data/40-1m.bmp" align="middle" width="200px"/>
+					</td>				
+				</tr>
+				<figcaption align="middle">
+							Sample Faces
+						</figcaption>
+			</table>
+				<img id="compact" src="mean_population_face.jpg" align="middle" width="300px"/>
+				<figcaption align="middle">
+							Mean Population Face
+						</figcaption>
+		</div>
+
+		<p align="left">Here we can see that, the mean face is a lot smoother than original faces, since each face's distinct features have been averaged out. </p>
+		<p align="left">If we morph each of the faces into the mean population face, interesting results would happen. Here are some selected samples. </p>
+		<table style="width=100%">
+				<tr>
+					<td>
+						<img id="compact" src="face_data/10.jpg" align="middle" width="200px"/>
+					</td>
+					<td>
+						<img id="compact" src="face_data/11.jpg" align="middle" width="200px"/></td>	
+					<td>
+						<img id="compact" src="face_data/13.jpg" align="middle" width="200px"/>
+					</td>
+					<td>
+						<img id="compact" src="face_data/19.jpg" align="middle" width="200px"/>
+					</td>	
+					<td>
+						<img id="compact" src="face_data/2.jpg" align="middle" width="200px"/>
+					</td>			
+				</tr>
+			</table>
+		<br>
+		<p align="left">I also morphed my face into the mean face as well as mean face into my geometry. (The difference in size is due to alignment with the mean face.) </p>
+		<table style="width=100%">
+				<tr>
+					<td>
+						<img  src="face_data/my_into_mean.jpg" align="middle" width="300px"/>
+						<figcaption align="middle">
+							Morph My face into Mean Face
+						</figcaption>
+					</td>
+					<td>
+						<img src="face_data/mean_into_me.jpg" align="middle" width="300px"/>
+						<figcaption align="middle">
+							Morph Mean face into My Face
+						</figcaption>
+					</td>				
+				</tr>
+			</table>
+	</div>
+
+<br>
+	<div>
+	<h2> 4. Caricatures </h2>
+		<p >Since we have the mean face, we can also use it to make caricatures of our faces. Caricatures should capture and exaggerate the distinct features of our face. Therefore I calcualted dx = my_face - mean_face, then created caricatures with: caricature = mean_face + alpha * dx. (alpha > 1 or alpha < 0). I created two caricatures using differnet alpha: </p>
+		<table style="width=100%">
+				<tr>
+					<td>
+						<img  src="face_data/caricature1.jpg" align="middle" width="300px"/>
+						<figcaption align="middle">
+							alpha = 2
+						</figcaption>
+					</td>
+					<td>
+						<img src="face_data/caricature2.jpg" align="middle" width="300px"/>
+						<figcaption align="middle">
+							alpha = -1
+						</figcaption>
+					</td>				
+				</tr>
+			</table>
+		<p align='left'>We can clearly see that, since my face is round and my eyes are large, the caricature with alpha > 1 would enhance these features, while the caricature with alpha < 0 would make my face pointy and my eyes smaller. </p>
+	</div>
+
+<br>
+
+<div>
+	<h2> 5. Bells & Whistles </h2>
+		<p > Check out our <a href="https://youtu.be/O3vouduLS3w">face-morphing music video </a> of the students in our class! Here's my part of it. :D </p>
+		<img src="lucy_to_ken.gif" align="middle" width="300px" />
+	</div>
+
+</div>
